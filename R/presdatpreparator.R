@@ -14,7 +14,8 @@ presdatpreparator <- function(data, study_area, buffer = 0.1, reps = 1000, crs =
   data_clipped <- st_intersection(data_sf, study_area_sf)
   
   # Convert clipped data to data frame for further processing
-  data_clipped_df <- as.data.frame(data_clipped)
+  data_clipped_df <- as.data.frame(st_coordinates(data_clipped))
+  colnames(data_clipped_df) <- tolower(colnames(data_clipped_df))
   
   # Step 1: Perform spatially balanced resampling
   resampled_data <- spatbalsample(data_clipped_df, buffer = buffer, reps = reps)
