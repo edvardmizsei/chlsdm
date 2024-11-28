@@ -2,6 +2,7 @@
 # Description: This function loads the processed raster files into a raster stack and checks that they have the same dimensions, CRS, and resolution.
 loadenv <- function(env_dir, file_ext = "asc") {
   library(terra)
+  library(tools)
   
   # List all files with the specified extension in the environmental data directory
   files <- as.data.frame(list.files(env_dir, full.names = TRUE))
