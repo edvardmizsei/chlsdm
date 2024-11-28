@@ -1,0 +1,18 @@
+Package: chlsdm
+Title: Species Distribution Modelling Framework
+Version: 0.1.0
+Authors@R: c(
+    person(given = "Edvárd", family = "Mizsei",
+           role = c("aut", "cre"),
+           email = "edvardmizsei@gmail.com")
+)
+Description: Provides tools for geospatial analysis, including spatially balanced resampling of geospatial points, removal of outliers using kernel density estimation, and an integrated workflow for preparing spatial data. These functions are part of the Conservation Herpetology Lab's Species Distribution Modelling (CHLSDM) framework and can be applied to spatial data for efficient and informed decision making in environmental analysis and geographic studies.
+Depends: R (>= 4.0.0)
+Imports: 
+    terra,
+    sf,
+    methods
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
