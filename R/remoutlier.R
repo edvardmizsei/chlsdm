@@ -1,19 +1,32 @@
-# Function to remove outlier coordinates using a density kernel
-remoutlier <- function(data, crs=4326, threshold = 90) {
+# Function: remoutlier - Removing Outliers Using a Density Kernel
+# Description: This function removes outlier coordinates based on kernel density estimation using the terra and sf packages.
+remoutlier <- function(data, crs = "EPSG:4326", threshold = 90) {
   library(terra)
   library(sf)
   
   # Convert data to sf object
   data_sf <- st_as_sf(data, coords = c("x", "y"), crs = crs)
   
-  # Create a terra SpatVector
+  # Create a terra SpatVector from sf object
   data_vect <- vect(data_sf)
   
-  # Calculate kernel density estimate
-  kde <- density(data_vect, adjust = 1, width = 1000, extent = 0.1)
+  # Create raster template to determine grid cell size for density calculation
+  resolution <- 0.01  # Adjust this value based on the data's extent
+  raster_template <- rast(ext(data_vect), resolution = resolution)
   
-  # Convert the density estimate to polygons representing the threshold percentile (e.g., 90%)
-  kde_poly <- as.polygons(kde, levels = threshold / 100)
+  # Rasterize the points to create an occurrence raster
+  occurrence_raster <- rasterize(data_vect, raster_template, fun = "count", background = 0)
+  
+  # Apply a focal operation to create a density estimate
+  # Define a 3x3 moving window to simulate kernel density
+  kernel <- matrix(1, nrow = 3, ncol = 3)
+  kde <- focal(occurrence_raster, w = kernel, fun = sum, na.rm = TRUE)
+  
+  # Define a threshold level to determine inclusion (e.g., values above the 90th percentile)
+  threshold_value <- quantile(values(kde), probs = threshold / 100, na.rm = TRUE)
+  
+  # Convert the raster density to polygons for areas above the threshold
+  kde_poly <- as.polygons(kde > threshold_value, dissolve = TRUE)
   
   # Convert polygons to sf object
   kde_poly_sf <- st_as_sf(kde_poly)
@@ -26,3 +39,9 @@ remoutlier <- function(data, crs=4326, threshold = 90) {
   
   return(filtered_data)
 }
+
+# Example usage for remoutlier
+# The following code demonstrates how to use remoutlier to remove outlier coordinates from input data.
+data <- data.frame(x = runif(100), y = runif(100))
+filtered_result <- remoutlier(data)
+print(filtered_result)
