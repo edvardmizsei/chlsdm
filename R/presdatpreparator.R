@@ -27,6 +27,6 @@ presdatpreparator <- function(data, study_area, buffer = 0.1, reps = 1000, crs =
 
 # Example usage for presdatpreparator
 # The following code demonstrates how to use presdatpreparator to perform both resampling and outlier removal on input data within a study area.
-study_area <- st_as_sf(st_sfc(st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))), crs = "EPSG:4326"))
-prepared_data <- presdatpreparator(data, study_area)
-print(prepared_data)
+# study_area <- st_as_sf(st_sfc(st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 1), c(0, 0)))), crs = "EPSG:4326"))
+# prepared_data <- presdatpreparator(data, study_area)
+# print(prepared_data)
