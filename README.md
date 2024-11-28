@@ -59,7 +59,7 @@ Fit species distribution models using the BIOMOD2 framework with `chlsdm` to pre
 
 ```r
 # Run the species distribution modeling workflow
-mysdm <- chlsdm(pres = pres3, env = env, sp = "My species", envselect = envselect, panum = 4, cvrep = 4, cores = 4)
+mysdm <- chlsdm(pres = pres3, env = env, sp = "My species", models=c("GLM","RF"), panum = 4, cvrep = 4, cores = 4)
 
 # Plot the resulting SDM
 plot(mysdm)
@@ -80,14 +80,14 @@ Here's an example of how to use `chlsdm` to run a full species distribution mode
 
 ```r
 # Load presence data
-pres <- read.csv("testdata/tesmar.csv")
+pres <- read.csv("data.csv")
 
-# Load and process environmental data
-env <- loadenv("c:/Users/edvar/Dropbox/sdm/envprep/", "asc")
+# Load processed environmental data
+env <- loadenv("c:/envprep/", "asc")
 
 # Run the SDM
-temporary_dir <- "c:/Users/edvar/temp/"
-mysdm <- chlsdm(pres = pres, env = env, sp = "MySpecies", envselect = envselect, panum = 4, cvrep = 4, cores = 4)
+temporary_dir <- "c:/temp/"
+mysdm <- chlsdm(pres = pres, env = env, sp = "MySpecies", models=c("GLM","RF"), panum = 4, cvrep = 4, cores = 4)
 
 # Plot the results
 plot(mysdm)
