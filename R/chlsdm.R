@@ -1,9 +1,11 @@
-chlsdm <- function(pres, env, sp="species name", envselect, models=c("GLM","GAM","ANN","RF"),panum = 4, cvrep = 4, cores = 4) {
+chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN","RF"),panum = 4, cvrep = 4, cores = 4) {
   library(biomod2)
   library(chlsdm)
   library(terra)
   library(sf)
   library(sp)
+
+  setwd(dir)
 
   # Convert presence data to SpatVector
   pr <- vect(st_as_sf(pres[, c("x", "y")], coords = c("x", "y"), crs = 4326))
