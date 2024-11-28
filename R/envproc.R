@@ -17,17 +17,10 @@ envproc <- function(study_area, env_dir, file_ext = "asc", out_dir) {
     rr <- rast(files[i])
     rr <- crop(rr, vect(study_area))
     rr <- mask(rr, vect(study_area))
-    if (i == 1) {
-      r <- rr
-    } else {
-      rr <- project(rr, r)
-      r <- c(r, rr)
-    }
-    i <- i + 1
+
+    # Write the processed rasters to the output directory
+    writeRaster(rr, paste0(out_dir, names(rr), ".asc"), filetype = "AAIGrid",overwrite=T)
   }
-  
-  # Write the processed rasters to the output directory
-  writeRaster(r, paste0(out_dir, names(r), ".asc"), filetype = "AAIGrid")
 }
 
 # Example usage for envproc
