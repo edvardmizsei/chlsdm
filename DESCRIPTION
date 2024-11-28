@@ -3,6 +3,7 @@ Title: Species Distribution Modelling Framework
 Version: 0.1.0
 Author: Edvárd Mizsei
 Description: Provides tools for geospatial analysis, including spatially balanced resampling of geospatial points, removal of outliers using kernel density estimation, and an integrated workflow for preparing spatial data. These functions are part of the Conservation Herpetology Lab's Species Distribution Modelling (CHLSDM) framework and can be applied to spatial data for efficient and informed decision making in environmental analysis and geographic studies.
+Imports: terra, sf
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
