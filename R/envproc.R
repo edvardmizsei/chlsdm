@@ -16,6 +16,7 @@ envproc <- function(study_area, env_dir, file_ext = "asc", out_dir) {
   for (i in 1:length(files)) {
     rr <- rast(files[i])
     rr <- crop(rr, vect(study_area))
+    rr[is.na(rr)] <- mean(as.numeric(values(rr)),na.rm=T)
     rr <- mask(rr, vect(study_area))
 
     # Write the processed rasters to the output directory
