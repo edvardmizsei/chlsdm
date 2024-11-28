@@ -3,7 +3,6 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
   library(chlsdm)
   library(terra)
   library(sf)
-  library(sp)
 
   setwd(dir)
 
