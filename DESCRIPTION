@@ -10,8 +10,7 @@ Description: Provides tools for geospatial analysis, including spatially balance
 Depends: R (>= 4.0.0)
 Imports: 
     terra,
-    sf,
-    methods
+    sf
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
