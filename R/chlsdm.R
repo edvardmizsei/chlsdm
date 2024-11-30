@@ -25,29 +25,45 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
   sdmi <- BIOMOD_Modeling(bm.format = pa.datasets,
                           models = models,
                           CV.nb.rep = cvrep,
-                          CV.perc = 0.5,
+                          CV.perc = 0.8,
                           nb.cpu = cores)
 
   # Project the models to the environment
-  sdmp <- BIOMOD_Projection(modeling.output = sdmi,
+  sdmp <- BIOMOD_Projection(bm.mod = sdmi,
                             new.env = env,
                             proj.name = "chlsdm")
 
   # Create ensemble models
-  sdme <- BIOMOD_EnsembleModeling(modeling.output = sdmi)
+  sdme <- BIOMOD_EnsembleModeling(bm.mod = sdmi,
+                                  em.algo = c('EMmean', 'EMca'),
+                                  metric.select = c('TSS'),
+                                  metric.select.thresh = c(0.7),
+                                  metric.eval = c('TSS'))
 
   # Create ensemble forecast
-  sdmef <- BIOMOD_EnsembleForecasting(ensemble.output = sdme,
-                                      projection.output = sdmp,
+  sdmef <- BIOMOD_EnsembleForecasting(bm.me = sdme,
+                                      bm.proj = sdmp,
                                       output.format = ".tif")
 
   # Load and average ensemble predictions
-  sdmout <- rast(paste0(sp, "/proj_current/proj_chlsdm_", sp, "_ensemble.tif"))
+  sdmout <- rast(paste0(dir,sp, "/proj_chlsdm/proj_chlsdm_", 
+                      sp, "_ensemble.tif"))
   unlink(paste0(getwd(), "/", sp), recursive = TRUE, force = TRUE)
   unlink(paste0(getwd(), "/", sp), recursive = TRUE, force = TRUE)
-  sdmoutm <- mean(sdmout) / 1000
 
-  return(sdmoutm)
+  outbin <- subset(sdmout,names(sdmout)[grepl("EMcaBy",names(sdmout))])
+  outbin <- mean(outbin)
+  outbin[outbin<1] <- 0
+
+  outmeano <- subset(sdmout,names(sdmout)[grepl("EMmeanBy",names(sdmout))])
+  outmean <- mean(outmeano)/1000
+
+  outcv <- stdev(outmeano)/mean(outmeano)
+
+  out <- c(outbin,outmean,outcv)
+  names(out) <- paste0(sp,"_",c("mean","binary","coeffvar"))
+
+  return(out)
 }
 
 # Example usage for chlsdm
