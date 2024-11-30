@@ -23,7 +23,7 @@ remoutlier <- function(data, crs = "EPSG:4326", threshold = 90) {
   kde <- focal(occurrence_raster, w = kernel, fun = sum, na.rm = TRUE)
   
   # Define a threshold level to determine inclusion (e.g., values above the 90th percentile)
-  threshold_value <- quantile(values(kde), probs = threshold / 100, na.rm = TRUE)
+  threshold_value <- quantile(values(kde), probs = threshold, na.rm = TRUE)
   
   # Convert the raster density to polygons for areas above the threshold
   kde_poly <- as.polygons(kde > threshold_value, dissolve = TRUE)
