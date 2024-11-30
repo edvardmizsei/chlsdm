@@ -60,7 +60,7 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
 
   outcv <- stdev(outmeano)/mean(outmeano)
 
-  out <- c(outbin,outmean,outcv)
+  out <- c(outmean,outbin,outcv)
   names(out) <- paste0(sp,"_",c("mean","binary","coeffvar"))
 
   return(out)
