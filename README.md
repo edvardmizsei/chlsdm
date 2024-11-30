@@ -27,7 +27,7 @@ pres <- read.csv("path/to/your/presence_data.csv") # WGS84 coordinates (x = lon,
 pres2 <- spatbalsample(pres, buffer = 0.1, reps = 100) # Ensures points are not too close to each other
 
 # Remove outlier points based on density estimation
-pres3 <- remoutlier(pres2, crs = 4326, threshold = 90) # Removes spatial outliers using kernel density estimation
+pres3 <- remoutlier(pres2, crs = 4326, threshold = 0.9) # Removes spatial outliers using kernel density estimation
 ```
 
 ### Step 2: Process Environmental Raster Data
@@ -59,7 +59,12 @@ Fit species distribution models using the BIOMOD2 framework with `chlsdm` to pre
 
 ```r
 # Run the species distribution modeling workflow
-mysdm <- chlsdm(pres = pres3, env = env, sp = "My species", models=c("GLM","RF"), panum = 4, cvrep = 4, cores = 4)
+mysdm <- chlsdm(pres = pres3,
+                env = env,
+                dir = "path/to/output/",
+                sp = "My species",
+                models=c("GLM","RF"),
+                panum = 4, cvrep = 4, cores = 4)
 
 # Plot the resulting SDM
 plot(mysdm)
@@ -87,10 +92,18 @@ env <- loadenv("c:/envprep/", "asc")
 
 # Run the SDM
 temporary_dir <- "c:/temp/"
-mysdm <- chlsdm(pres = pres, env = env, sp = "MySpecies", models=c("GLM","RF"), panum = 4, cvrep = 4, cores = 4)
+mysdm <- chlsdm(pres = pres,
+                env = env,
+                dir = "path/to/output/",
+                sp = "MySpecies",
+                models=c("GLM","RF"),
+                panum = 4, cvrep = 4, cores = 4)
 
 # Plot the results
-plot(mysdm)
+plot(mysdm[[1]],main="mean")
+plot(mysdm[[2]],main="binary")
+plot(mysdm[[3]],main="coefficients of variation")
+
 ```
 
 ## Contributions
