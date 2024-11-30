@@ -1,6 +1,6 @@
 # Function: remoutlier - Removing Outliers Using a Density Kernel
 # Description: This function removes outlier coordinates based on kernel density estimation using the terra and sf packages.
-remoutlier <- function(data, crs = "EPSG:4326", threshold = 90) {
+remoutlier <- function(data, crs = "EPSG:4326", threshold = 0.9) {
   library(terra)
   library(sf)
   
