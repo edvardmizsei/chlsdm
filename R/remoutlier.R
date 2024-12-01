@@ -42,6 +42,6 @@ remoutlier <- function(data, crs = "EPSG:4326", threshold = 0.9) {
 
 # Example usage for remoutlier
 # The following code demonstrates how to use remoutlier to remove outlier coordinates from input data.
-data <- data.frame(x = runif(100), y = runif(100))
-filtered_result <- remoutlier(data)
-print(filtered_result)
+# data <- data.frame(x = runif(100), y = runif(100))
+# filtered_result <- remoutlier(data)
+# print(filtered_result)
