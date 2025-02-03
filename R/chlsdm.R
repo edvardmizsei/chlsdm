@@ -5,6 +5,9 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
   library(sf)
 
   setwd(dir)
+  envnames <- names(env)
+  names(env) <- paste0("env",1:length(names(env)))
+
 
   # Convert presence data to SpatVector
   pr <- vect(st_as_sf(pres[, c("x", "y")], coords = c("x", "y"), crs = 4326))
@@ -41,7 +44,7 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
                                   metric.eval = c('TSS'))
 
   # Create ensemble forecast
-  sdmef <- BIOMOD_EnsembleForecasting(bm.me = sdme,
+  sdmef <- BIOMOD_EnsembleForecasting(bm.em = sdme,
                                       bm.proj = sdmp,
                                       output.format = ".tif")
 
