@@ -38,10 +38,8 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
 
   # Create ensemble models
   sdme <- BIOMOD_EnsembleModeling(bm.mod = sdmi,
-                                  em.algo = c('EMmean', 'EMca'),
-                                  metric.select = c('TSS'),
-                                  metric.select.thresh = c(0.7),
-                                  metric.eval = c('TSS'))
+                                  models.chosen="all",
+                                  em.by="all")
 
   # Create ensemble forecast
   sdmef <- BIOMOD_EnsembleForecasting(bm.em = sdme,
@@ -49,22 +47,13 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
                                       output.format = ".tif")
 
   # Load and average ensemble predictions
-  sdmout <- rast(paste0(dir,sp, "/proj_chlsdm/proj_chlsdm_", 
+  sdmout <- rast(paste0(dir,"/",sp, "/proj_chlsdm/proj_chlsdm_", 
                       sp, "_ensemble.tif"))
   unlink(paste0(getwd(), "/", sp), recursive = TRUE, force = TRUE)
   unlink(paste0(getwd(), "/", sp), recursive = TRUE, force = TRUE)
 
-  outbin <- subset(sdmout,names(sdmout)[grepl("EMcaBy",names(sdmout))])
-  outbin <- mean(outbin)
-  outbin[outbin<1] <- 0
-
-  outmeano <- subset(sdmout,names(sdmout)[grepl("EMmeanBy",names(sdmout))])
-  outmean <- mean(outmeano)/1000
-
-  outcv <- stdev(outmeano)/mean(outmeano)
-
-  out <- c(outmean,outbin,outcv)
-  names(out) <- paste0(sp,"_",c("mean","binary","coeffvar"))
+  out <- mean(sdmout)/1000
+  names(out) <- sp
 
   return(out)
 }
