@@ -4,7 +4,11 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
   library(terra)
   library(sf)
 
+  if (!dir.exists(dir)){
+  dir.create(dir)
+  }
   setwd(dir)
+  
   envnames <- names(env)
   names(env) <- paste0("env",1:length(names(env)))
 
@@ -47,14 +51,13 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
                                       output.format = ".tif")
 
   # Load and average ensemble predictions
-  sdmout <- rast(paste0(dir,"/",sp, "/proj_chlsdm/proj_chlsdm_", 
-                      sp, "_ensemble.tif"))
-  unlink(paste0(getwd(), "/", sp), recursive = TRUE, force = TRUE)
-  unlink(paste0(getwd(), "/", sp), recursive = TRUE, force = TRUE)
-
+  sdmout <- rast(sdmef@proj.out@link)
+  
   out <- mean(sdmout)/1000
   names(out) <- sp
 
+  writeRaster(out,paste0(sp,"_sdm_out.asc"),filetype = "AAIGrid",overwrite = T)
+  
   return(out)
 }
 
