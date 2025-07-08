@@ -55,7 +55,7 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
   # Load and average ensemble predictions
   sdmout <- rast(sdmef@proj.out@link)
   
-  out <- mean(sdmout)/1000
+  out <- terra::mean(sdmout)/1000
   names(out) <- sp
 
   writeRaster(out,paste0(sp,"_sdm_out.asc"),filetype = "AAIGrid",overwrite = T)
