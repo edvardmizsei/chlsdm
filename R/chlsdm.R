@@ -26,8 +26,10 @@ chlsdm <- function(pres, env, dir, sp="species name", models=c("GLM","GAM","ANN"
                                       na.rm = TRUE)
 
   # Set modeling options
-  myBiomodOption <- BIOMOD_ModelingOptions()
-
+  # myBiomodOption <- BIOMOD_ModelingOptions()
+  opt.d <- bm_ModelingOptions(data.type = 'binary',
+                            models = c('ANN','CTA','FDA','GAM','GBM','GLM','MARS','MAXNET','RF','SRE','XGBOOST'),
+                            strategy = 'default')
   # Run modeling
   sdmi <- BIOMOD_Modeling(bm.format = pa.datasets,
                           models = models,
