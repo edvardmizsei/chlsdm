@@ -4,27 +4,28 @@ loadenv <- function(env_dir, file_ext = "asc") {
   library(terra)
   library(tools)
   
-  # List all files with the specified extension in the environmental data directory
-  files <- as.data.frame(list.files(env_dir, full.names = TRUE))
-  files$ext <- file_ext(files[, 1])
-  files <- files[files$ext == file_ext, ]
-  files <- files[, 1]
+  # List files
+  files <- list.files(env_dir, full.names = TRUE)
+  files <- files[file_ext(files) == file_ext]
   
-  # Load the rasters into a SpatRaster stack
+  # Load rasters
   r_stack <- rast(files)
   
-  # Check for consistency in dimensions, CRS, and resolution
+  # Set layer names from file names (remove path and extension)
+  names(r_stack) <- file_path_sans_ext(basename(files))
+  
+  # Check consistency
   dims <- sapply(r_stack, dim)
   crs_list <- sapply(r_stack, crs)
   res_list <- sapply(r_stack, res)
   
-  if (!all(dims == dims[, 1])) {
+  if (!all(dims == dims[,1])) {
     stop("Error: Not all rasters have the same dimensions.")
   }
   if (!all(crs_list == crs_list[1])) {
     stop("Error: Not all rasters have the same CRS.")
   }
-  if (!all(res_list == res_list[, 1])) {
+  if (!all(res_list == res_list[,1])) {
     stop("Error: Not all rasters have the same resolution.")
   }
   
