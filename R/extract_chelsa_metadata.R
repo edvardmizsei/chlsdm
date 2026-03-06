@@ -1,3 +1,8 @@
+#' Extract metadata from CHELSA file paths
+#'
+#' @param file_paths Character vector of CHELSA file paths or URLs.
+#' @return A data frame with parsed metadata.
+#' @export
 extract_chelsa_metadata <- function(file_paths) {
   paths <- normalize_paths(file_paths)
   split <- strsplit(paths, "/", fixed = TRUE)
